@@ -1,0 +1,12 @@
+real a;
+try
+{
+  a = 1./0.;
+}
+catch  (...)
+{
+  cout << "An error occured!!" << endl;
+  a = 0;
+}
+
+cout << a << endl;

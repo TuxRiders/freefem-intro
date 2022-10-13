@@ -1,0 +1,12 @@
+macro test(uu) uu//
+cout << test("toto") << endl;
+
+macro test2(u) u#xx//
+string strxx = "check";
+cout << test2(str) << endl;
+
+macro div(u) (dx(u#x) + dy(u#y) + dz(u#z))//
+macro grad(u) [dx(u), dy(u), dz(u)]//
+macro Grad(u) [grad(u#x), grad(u#y), grad(u#z)]//
+
+// so div(v) returns (dx(vx) + dy(vy) + dz(vz))

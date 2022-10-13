@@ -1,0 +1,9 @@
+include "getARGV.idp"
+
+int n = getARGV("-size", 5);
+
+mesh Mesh = square(n, n);
+plot(Mesh);
+
+string config = getARGV("-C", "default");
+cout << "The configuration is " << config << endl;
