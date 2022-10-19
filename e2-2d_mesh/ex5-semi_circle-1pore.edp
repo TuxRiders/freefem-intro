@@ -1,0 +1,15 @@
+real diameter = 430.e-6;
+real pDiameter = 100.e-6;
+real shiftUp = 50.e-6;
+
+real xCenter = diameter / 2;
+real yCenter = pDiameter / 2 + shiftUp;
+
+border a0(t = pi , 2 * pi) { x = diameter / 2 + diameter / 2 * cos(t) ; y = diameter / 2 + diameter / 2 * sin(t) ; label = 1;};
+border a1(t = 0 , 1) { x = diameter * (1 - t) ; y = diameter / 2 ; label = 1;}
+border b0(t = 0 , 2 * pi) { x = xCenter + pDiameter / 2 * cos(t) ; y = yCenter + pDiameter / 2 * sin(t) ; label = 3;};
+
+int n = 4;
+mesh Th = buildmesh(a0(20 * n) + a1(10 * n) + b0(20 * n));
+
+plot(Th , wait = 1);

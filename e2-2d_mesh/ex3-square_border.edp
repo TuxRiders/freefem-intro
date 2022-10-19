@@ -1,0 +1,15 @@
+real L = 0.1;
+int meshSize = 60;
+
+int wall = 1;
+int inlet = 2;
+int outlet = 3;
+
+mesh Mesh;
+border b1(t=0., 1.){x=L*t; y=0.; label=wall;};
+border b2(t=0., 1.){x=L; y=L*t; label=outlet;};
+border b3(t=0., 1.){x=L-L*t; y=L; label=wall;};
+border b4(t=0., 1.){x=0.; y=L-L*t; label=inlet;};
+
+Mesh = buildmesh(b1(meshSize) + b2(meshSize) + b3(meshSize) + b4(meshSize));
+plot(Mesh, wait=1);

@@ -1,0 +1,19 @@
+int C1 = 99;
+int C2 = 98;
+
+border C0(t=0, 2*pi){x=5*cos(t); y=5*sin(t);}
+
+border C11(t=0, 1){ x=1+t;  y=3;      label=C1;}
+border C12(t=0, 1){ x=2;    y=3-6*t;  label=C1;}
+border C13(t=0, 1){ x=2-t;  y=-3;     label=C1;}
+border C14(t=0, 1){ x=1;    y=-3+6*t; label=C1;}
+
+border C21(t=0, 1){ x=-2+t; y=3;      label=C2;}
+border C22(t=0, 1){ x=-1;   y=3-6*t;  label=C2;}
+border C23(t=0, 1){ x=-1-t; y=-3;     label=C2;}
+border C24(t=1, 0){ x=-2;   y=-3+6*t; label=C2;}
+
+mesh Th=buildmesh(C0(50)
+    +C11(5)+C12(20)+C13(5)+C14(20)
+    +C21(5)+C22(20)+C23(5)+C24(-20));
+plot(Th, wait=true);

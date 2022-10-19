@@ -1,0 +1,3 @@
+string meshFileName = "mesh/bend_pipe_2d.mesh";
+mesh Mesh = readmesh(meshFileName);
+plot(Mesh, wait=1);
