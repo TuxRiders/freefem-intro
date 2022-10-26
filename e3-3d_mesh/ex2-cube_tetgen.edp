@@ -1,0 +1,12 @@
+load "msh3"
+load "tetgen"
+load "medit"
+
+real L = 5.;
+int meshSize = 30;
+
+mesh3 Mesh = cube(2, 2, 2, [L*x, L*y, L*z]);
+real[int] domain = [0, 0, 0, 0, 1];
+Mesh = tetgreconstruction(Mesh, switch="raAQ", regionlist=domain, sizeofvolume=(L*1./meshSize)^3 / 6);
+
+medit("Mesh", Mesh);

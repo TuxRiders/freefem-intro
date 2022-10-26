@@ -1,0 +1,13 @@
+load "msh3"
+load "medit"
+
+real sizeX = 10;
+real sizeY = 10;
+real sizeZ = 20;
+int meshX = 20;
+int meshY = 20;
+int meshZ = 40;
+
+mesh3 Mesh = cube(meshX, meshY, meshZ, [sizeX*x, sizeY*y, sizeZ*z]);
+plot(Mesh, wait=1);
+medit("Mesh", Mesh);

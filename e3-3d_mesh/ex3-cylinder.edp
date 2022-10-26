@@ -1,0 +1,28 @@
+load "msh3"
+load "tetgen"
+load "medit"
+
+int nx=10;
+int nth=50;
+real xmin=1.,xmax=3.;
+border cc(t=0,2*pi){x=cos(t);y=sin(t);label=1;}
+mesh Thcercle = buildmesh(cc(nth));
+plot(Thcercle,wait=1);
+
+mesh Thcarre=square(nx,nth,[xmin+x*(xmax-xmin),2*pi*y]);
+plot(Thcarre,wait=1);
+
+func f1 = x;
+func f2 = cos(y);
+func f3 = sin(y);
+meshS Thsurf1=movemesh23(Thcarre,transfo=[f1,f2,f3],orientation=-1);
+meshS Thsurf2=movemesh23(Thcercle,transfo=[xmin,x,y],orientation=-1);
+meshS Thsurf3=movemesh23(Thcercle,transfo=[xmax,x,y],orientation=1);
+meshS Thsurf=Thsurf1+Thsurf2+Thsurf3;
+real voltet= ( ( (2*pi)/50 )^3 )/6.;
+cout << "  voltet = " << voltet << endl;
+real[int] domaine = [1.5,0.,0.,1,voltet];
+mesh3 Th=tetg(Thsurf,switch="pqaaAAYYQ",nbofregions=1,regionlist=domaine);
+
+medit("cyl",Th,wait=1);
+plot(Th,cmm="cyl");

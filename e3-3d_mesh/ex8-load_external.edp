@@ -1,0 +1,5 @@
+load "msh3"
+
+string meshFileName = "mesh/bend_pipe_3d_coarse.mesh";
+mesh3 Mesh = readmesh3(meshFileName);
+plot(Mesh, wait=1);
