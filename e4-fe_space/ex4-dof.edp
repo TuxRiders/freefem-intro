@@ -1,0 +1,23 @@
+int meshSize = 4;
+
+mesh Mesh = square(meshSize, meshSize);
+plot(Mesh, wait=1);
+
+fespace SpaceP1(Mesh, P1);
+
+cout << "Finite Element DOF: " << SpaceP1.ndof << endl;
+cout << "Number of Elements: " << Mesh.nt << endl;
+
+SpaceP1 phi = sin(5*x)+cos(5*y);
+plot(phi, wait=1, fill=1, value=1);
+
+for (int i = 0; i < SpaceP1.ndof; i++)
+    cout << i << " " << phi[][i] << endl;
+
+cout << "-----------" << endl;
+cout << phi(0.5, 0.5) << endl;
+
+for (int i = 0; i < SpaceP1.ndof; i++)
+    phi[][i] = i;
+
+plot(phi, wait=1, fill=1, value=1);

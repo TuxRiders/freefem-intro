@@ -1,0 +1,11 @@
+mesh Mesh = square(50, 50);
+plot(Mesh, wait=1);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 u = sin(5*x)+cos(5*y);
+
+Mesh = square(30, 30, [3*x, 3*y]);
+
+plot(u, fill=1, wait=1);
+u = u;
+plot(u, fill=1, wait=1);

@@ -1,0 +1,17 @@
+int meshSize = 50;
+
+mesh Mesh = square(meshSize, meshSize, [5*x, 5*y]);
+
+func map = sin(10*(x^2+y^2))/10;
+
+fespace SpaceP0(Mesh, P0);
+fespace SpaceP1(Mesh, P1);
+fespace SpaceP2(Mesh, P2);
+
+SpaceP0 u0 = map;
+SpaceP1 u1 = map;
+SpaceP2 u2 = map;
+
+plot(u1, fill=1, wait=1);
+plot(u0, fill=1, wait=1);
+plot(u2, fill=1, wait=1);
