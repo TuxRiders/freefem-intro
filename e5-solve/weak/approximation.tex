@@ -1,0 +1,51 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+
+\title{Function approximation using finite element}
+\date{}
+
+\begin{document}
+\maketitle
+
+\onehalfspacing
+
+\begin{equation} 
+f=2xy-x^2
+\end{equation}
+
+\noindent We want to check how to reproduce this function in a discrete space. The function $u$ represents an approximation of $f$: 
+
+\begin{equation} \label{eq:main}
+u=f
+\end{equation}
+
+\noindent After the approximation using finite element, the following error (L2 norm) should be small enough:
+
+\begin{equation} \label{eq:error}
+\textrm{error}=\sum_{i=1}^n (u_i-f_i)^2
+\end{equation}
+where $n$ is the number of degrees of freedom (e.g. the number of nodes).
+
+\noindent We multiply each term of the Eq. \ref{eq:main} by an arbitrary test function $v$:
+
+\begin{equation}
+uv=fv
+\end{equation}
+
+\noindent Integrating over the whole domain (e.g. a square) yields:
+\begin{equation} 
+\int_{\Omega} u v d \omega=\int_{\Omega} f v d \omega
+\end{equation}
+
+\noindent which can be rearranged to:
+\begin{equation} 
+\int_{\Omega} u v d \omega-\int_{\Omega} f v d \omega=0
+\end{equation}
+
+\noindent This form can be directly implemented in FreeFEM, with $\Omega$ being the finite element mesh, after which the error can be calculated based on Eq \ref{eq:error} to check if $u$ is close enough to $f$.
+
+\end{document}

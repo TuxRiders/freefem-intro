@@ -1,0 +1,32 @@
+int C1 = 10;
+int meshSize = 5;
+real D = 1;
+
+border C0(t=0, 2*pi){x=5*cos(t); y=5*sin(t);}
+
+border C11(t=0, 1){ x=-0.5+t;  y=3;      label=C1;}
+border C12(t=0, 1){ x=0.5;    y=3-6*t;  label=C1;}
+border C13(t=0, 1){ x=0.5-t;  y=-3;     label=C1;}
+border C14(t=0, 1){ x=-0.5;    y=-3+6*t; label=C1;}
+
+mesh Mesh = buildmesh(C0(meshSize*10)
+    + C11(meshSize) + C12(meshSize*4) + C13(meshSize) + C14(meshSize*4));
+plot(Mesh, wait=true);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 u, v;
+SpaceP1 f = 1; // try 10*x
+
+solve diffuse(u, v)
+   = int2d(Mesh)(
+         D*(
+             dx(u)*dx(v)
+           + dy(u)*dy(v)
+       )
+   )
+   - int2d(Mesh)(f*v)
+   +on(C0, u=20)
+   +on(C1, u=60)
+   ;
+
+plot(u, wait=true, value=true, fill=true);

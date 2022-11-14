@@ -1,0 +1,24 @@
+real x0 = 0;
+real x1 = 2;
+real y0 = -1;
+real y1 = 1;
+int n = 8;
+real m = 8;
+
+mesh Mesh  = square(n, m, [x0+(x1-x0)*x, y0+(y1-y0)*y]);
+
+func f=2*x*y-pow(x,2);
+
+plot(Mesh, wait=1);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 u, v;
+
+solve Approx(u,v,solver=LU) =
+		int2d(Mesh)(u*v) - int2d(Mesh)(f*v);
+
+plot(u, fill=1, value=1);
+
+cout << SpaceP1.ndof << endl;
+SpaceP1 err = u - f;
+cout << "error L2 = " << sqrt(int2d(Mesh)(err^2))<< endl;

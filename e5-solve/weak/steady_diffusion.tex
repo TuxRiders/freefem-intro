@@ -1,0 +1,68 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+
+\title{Weak formulation of the steady diffusion equation}
+\date{}
+
+\begin{document}
+\maketitle
+
+\onehalfspacing
+
+\begin{equation} \label{eq:pde_main}
+-\nabla \cdot\left(D \nabla u\right))=f
+\end{equation}
+
+\noindent We define a space of test functions and then, multiply each term of the PDE by any arbitrary function as a member of this space:
+\begin{equation} \label{eq:function_space}
+\mathcal{V}=\left\{v(\mathbf{x}) | \mathbf{x} \in {\Omega}, v(\mathbf{x}) \in \mathcal{H}^{1}(\Omega), \text { and } v(\mathbf{x})=0 \text { on } \Gamma\right\}
+\end{equation}
+in which the $\Omega$ is the domain of interest, $\Gamma$ is the boundary of $\Omega$, and $\mathcal{H}^{1}$ denotes the Sobolev space of the domain $\Omega$, which is a space of functions whose derivatives are square-integrable functions in $\Omega$. The solution of the PDE belongs to a trial function space, which is similarly defined as:
+
+\begin{equation} \label{eq:trial_domain}
+\mathcal{S}_{t}=\left\{u(\mathbf{x}) | \mathbf{x} \in \Omega, u(\mathbf{x}) \in \mathcal{H}^{1}(\Omega), \text { and } \frac{\partial u}{\partial n}=0 \text { on } \Gamma\right\}
+\end{equation}
+
+\noindent We multiply Eq. \ref{eq:pde_main} to an arbitrary function $v \in \mathcal{V}$:
+
+\begin{equation}
+-\nabla \cdot\left(D \nabla u\right)v=fv
+\end{equation}
+
+\noindent Integrating over the whole domain yields:
+\begin{equation} \label{eq:int_first}
+-\int_{\Omega} \nabla \cdot (D  \nabla u) v d \omega=\int_{\Omega} f v d \omega
+\end{equation}
+
+\noindent The diffusion term can be split using the integration by parts technique:
+\begin{equation} \label{eq:int_part}
+\int_{\Omega} \nabla \cdot (D  \nabla u) v d \omega = \int_{\Omega} \nabla \cdot[v(D  \nabla u)] d \omega-\int_{\Omega} (\nabla v) \cdot(D \nabla u) d \omega
+\end{equation}
+
+\noindent in which the second term can be converted to a surface integral on the domain boundary by applying the Green's divergence theory. The surface integral is zero because there is a no-flux boundary condition on the boundary of the computational domain (defined in the trial function space according to Eq. \ref{eq:trial_domain}):
+\begin{equation} \label{eq:divergence}
+\int_{\Omega} \nabla \cdot[v(D \nabla u)] d \omega = \int_{\Gamma} D v \frac{\partial u}{\partial n} d \gamma=0
+\end{equation}
+
+\noindent Inserting Eqs. \ref{eq:int_part} into \ref{eq:divergence}  yields:
+\begin{equation}
+\int_{\Omega} \nabla \cdot (D  \nabla u) v d \omega = -\int_{\Omega} (\nabla v) \cdot(D \nabla u) d \omega
+\end{equation}
+
+\noindent Substituting this into Eq. \ref{eq:int_first} results in the weak form of Eq. \ref{eq:pde_main}:
+
+\begin{equation}  \label{eq:weak_general}
+\int_{\Omega} (\nabla v) \cdot(D \nabla u) d \omega=\int_{\Omega} f v d \omega
+\end{equation}
+
+\noindent or
+
+\begin{equation}  \label{eq:weak_general}
+\int_{\Omega} (\nabla v) \cdot(D \nabla u) d \omega-\int_{\Omega} f v d \omega=0
+\end{equation}
+
+\end{document}
