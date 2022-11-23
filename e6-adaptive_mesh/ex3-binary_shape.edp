@@ -1,0 +1,21 @@
+real L = 5.;
+int meshSize = 300;
+
+mesh Mesh = square(meshSize, meshSize, [L*x, L*y]);
+plot(Mesh, wait=1);
+
+func circle = sqrt((x-L/2)^2 + (y-L/2)^2) < 1;
+func box = (x > 2) * (x < 3) * (y > 1) * (y < 4);
+
+fespace SpaceP1(Mesh, P1);
+
+// SpaceP1 u = circle * box - 0.5;
+SpaceP1 temp1 = circle;
+SpaceP1 temp2 = box;
+SpaceP1 u = max(temp1,temp2);
+
+plot(u,fill=1,wait=1);
+
+Mesh = adaptmesh(Mesh, u, err=1e-3, iso=1, ratio=1.2, nbvx=7500000, hmin=1e-3, hmax=0.5);
+
+plot(Mesh);

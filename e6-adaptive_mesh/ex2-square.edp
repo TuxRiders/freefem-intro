@@ -1,0 +1,17 @@
+real L = 10.; // length of the main mesh box (mm)
+int meshSize = 70; // number of mesh nodes on each edge of the box
+real meshMin = 1e-2;
+real meshMax = 1;
+real meshError = 1e-1;
+
+mesh Mesh = square(meshSize, meshSize, [L*x, L*y]);
+plot(Mesh, wait=1);
+
+func box = (x > 2.5) * (x < 7.5) * (y > 2.5) * (y < 7.5);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 phi;
+phi = box - 0.5;
+
+Mesh = adaptmesh(Mesh, phi, err=meshError, iso=1, ratio=1.2, nbvx=7500000, hmin=meshMin, hmax=meshMax);
+plot(Mesh, wait=1);

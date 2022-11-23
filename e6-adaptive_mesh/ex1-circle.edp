@@ -1,0 +1,12 @@
+mesh Mesh = square(60, 60);
+plot(Mesh,wait=1);
+
+fespace SpaceP1(Mesh, P1);
+cout << SpaceP1.ndof;
+
+SpaceP1 u;
+u = sqrt(x^2+y^2) < 0.5;
+plot(u,fill=1,wait=1);
+
+Mesh = adaptmesh(Mesh, u, ratio=1.2);
+plot(Mesh);

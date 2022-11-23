@@ -1,0 +1,17 @@
+load "msh3"
+load "medit"
+load "mmg"
+
+int nn = 40;
+mesh3 Mesh = cube(nn,nn,nn);
+
+func sphere = sqrt((x-0.5)^2+(y-0.5)^2+(z-0.5)^2)-0.3;
+real hmin = 0.02;
+real hmax = 0.1;
+
+fespace SpaceP1(Mesh,P1);
+SpaceP1 met = max(hmin,min(hmax,abs(sphere)));
+
+Mesh = mmg3d(Mesh,metric=met[]);
+
+medit("Mesh",Mesh);

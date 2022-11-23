@@ -1,0 +1,21 @@
+load "msh3"
+load "medit"
+load "tetgen"
+load "mshmet"
+
+real L = 5.;
+int meshSize = 40;
+mesh3 Mesh = cube(meshSize, meshSize, meshSize, [L*x, L*y, L*z]);
+func circle = sqrt((x-L/2)^2 + (y-L/2)^2 + (z-L/2)^2) < 1;
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 u = circle - 0.5;
+
+medit("Level set", Mesh, u, wait=1);
+
+SpaceP1 h;
+h[]=mshmet(Mesh,u,normalization=1,aniso=0,nbregul=1,hmin=1e-3,hmax=0.5,err=1e-2);
+Mesh=tetgreconstruction(Mesh,switch="raAQ",sizeofvolume=h*h*h/6.);
+cout << "Done adapting!" << endl;
+u = u;
+medit("Level set", Mesh, u, wait=1);
