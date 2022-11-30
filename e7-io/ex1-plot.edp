@@ -1,0 +1,7 @@
+mesh Mesh = square(10, 10);
+
+fespace SpaceP1(Mesh, P1);
+
+SpaceP1 u=x^2+y^2, v=x^2-y^2;
+
+plot(Mesh, u, [u, v], value=true);

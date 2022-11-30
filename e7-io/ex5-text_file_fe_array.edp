@@ -1,0 +1,16 @@
+mesh Mesh = square(10, 10);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 X = x;
+
+{
+  ofstream file("test_array.txt");
+  file << X[] << endl;
+}
+
+SpaceP1 checkX;
+ifstream fileRead("test_array.txt");
+
+fileRead >> checkX[];
+
+plot(checkX, fill=1);

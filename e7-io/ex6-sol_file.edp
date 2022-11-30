@@ -1,0 +1,13 @@
+load "medit"
+
+mesh Mesh = square(10, 10);
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 X = x;
+
+savesol("test.sol", Mesh, X);
+
+SpaceP1 checkX;
+checkX[] = readsol("test.sol");
+
+plot(checkX, fill=1);

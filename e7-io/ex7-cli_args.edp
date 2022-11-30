@@ -1,0 +1,19 @@
+// part of https://github.com/mbarzegary/BioDeg-UI/blob/main/core/src/parameters.idp
+// run like: FreeFem++ ex7-cli_args.edp -vtk_output_name test -write_vtk 0 -mesh_size 20 -fluid_nu 0.5 -v 0
+
+include "getARGV.idp"
+
+string vtkOutputFilename = getARGV("-vtk_output_name", "output/output");
+bool writeVtkOutput = getARGV("-write_vtk", 1);
+int meshSize = getARGV("-mesh_size", 32);
+real nu = getARGV("-fluid_nu", 0.85);
+
+macro print(text)
+{
+	cout << text << endl;
+}//
+
+print(vtkOutputFilename);
+print(writeVtkOutput);
+print(meshSize);
+print(nu);

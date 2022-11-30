@@ -1,0 +1,17 @@
+string fileName = "file.txt";
+
+int a = 10;
+real b = 1.5;
+
+ofstream fileOut(fileName);
+fileOut << a << " " << b << endl;
+fileOut.flush;
+
+int c;
+real d;
+
+ifstream fileIn(fileName);
+fileIn >> c;
+fileIn >> d;
+cout << c << endl;
+cout << d << endl;
