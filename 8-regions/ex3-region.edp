@@ -1,0 +1,23 @@
+real L = 0.1;
+real R = 0.025;
+int meshSize = 60;
+int meshSizeIslet = 80;
+
+mesh Mesh;
+{
+  border b1(t=0., 1.){x=L*t; y=0.;};
+  border b2(t=0., 1.){x=L; y=L*t;};
+  border b3(t=0., 1.){x=L-L*t; y=L;};
+  border b4(t=0., 1.){x=0.; y=L-L*t;};
+
+  border c1(t = 0 , 2 * pi) {x = L/2 + R * cos(t) ; y = L/2 + R * sin(t);};
+
+  Mesh = buildmesh(b1(meshSize) + b2(meshSize) + b3(meshSize) + b4(meshSize) + c1(meshSizeIslet));
+}
+plot(Mesh);
+
+int islet = Mesh(L/2, L/2).region;
+int solution = Mesh(0.1, 0.1).region;
+
+cout << "islet region: " << islet << endl;
+cout << "solution region: " << solution << endl;

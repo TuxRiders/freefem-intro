@@ -1,0 +1,60 @@
+load "iovtk"
+
+int nn = 50;
+real L = 1.;
+real D = 1.;
+
+real Dc = 0.0005;
+real cBC = 0.1;
+
+real dt = 0.1;
+real T = 40;
+int saveEach = 5;
+int[int] orderOut = [1];
+
+macro grad(u) [dx(u), dy(u)]//
+
+int Wall = 1;
+int InnerWall = 4;
+
+border b1(t=0., 1.){x=L*t; y=0.; label=Wall;};
+border b2(t=0., 1.){x=L; y=D*t; label=Wall;};
+border b3(t=0., 1.){x=L-L*t; y=D; label=Wall;};
+border b4(t=0., 1.){x=0.; y=D-D*t; label=Wall;};
+border b5(t=2*pi, 0){x=L/2+0.2*sin(t); y=D/2+0.2*cos(t); label=InnerWall;}
+
+int nnL = max(2., L*nn);
+int nnD = max(2., D*nn);
+
+mesh Mesh = buildmesh(b1(nnL) + b2(nnD) + b3(nnL) + b4(nnD) + b5(-2*nn));
+
+fespace SpaceP1(Mesh, P1);
+SpaceP1 c, cold;
+
+fespace SpaceP0(Mesh, P0);
+SpaceP0 De = Dc * (x <= L/2) + 0.1 * Dc * (x > L/2);
+
+varf diffuse(c, v) =
+    int2d(Mesh)(c/dt*v)
+    + int2d(Mesh)(De*(grad(c)' * grad(v)))
+    + int2d(Mesh)(cold/dt*v)
+    + on(InnerWall, c=cBC)
+;
+
+c = 0;
+
+matrix<real> A = diffuse(SpaceP1, SpaceP1, solver=sparsesolver);
+real[int] rhs = diffuse(0, SpaceP1);
+
+for(int i = 0; i < T/dt; i++)
+{
+  cout << "iteration: " << i << endl;
+
+  cold = c;
+
+  rhs  = diffuse(0, SpaceP1);
+  c[] = A^-1 * rhs;
+
+  if (i % saveEach == 0)
+    savevtk("out-2-"+i+".vtu", Mesh, c, dataname="c", order=orderOut);
+}
