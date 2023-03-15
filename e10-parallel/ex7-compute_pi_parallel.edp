@@ -1,0 +1,33 @@
+// Pi equals to the integral of 4/(1+x*x) between 0 and 1
+// the integral is approximated by a sum of n intervals (trapezoid rule)
+// the approximation of the integral in each interval is (1/n)*4/(1+x*x)
+// each process adds up every n'th interval
+
+// run: mpiexec -n 4 FreeFem++-mpi ex7-compute_pi_parallel.edp -v 0 -n 5e8
+
+include "getARGV.idp"
+
+real n = getARGV("-n", 1e2);
+
+real h = 1.0 / n;
+real sumLocal, sumGlobal;
+
+real begin = mpiWtime();
+
+for (int i = mpirank; i <= n; i += mpisize)
+{
+    x = h * (i - 0.5);
+    sumLocal += 4.0 / (1.0 + x*x);
+}
+
+mpiAllReduce(sumLocal, sumGlobal, mpiCommWorld, mpiSUM);
+real PI = h * sumGlobal;
+
+real finish = mpiWtime();
+
+if (mpirank == 0)
+{
+  cout << "Computed Pi = " << PI << endl;
+  cout << "The error is " << PI - pi << endl;
+  cout << "Computing time = " << finish-begin << " s" << endl;
+}

@@ -1,0 +1,15 @@
+// mesh created in all ranks
+/*
+mesh Mesh = square(10, 10);
+if (mpirank == 0)
+  plot(Mesh);
+*/
+
+mesh Mesh;
+if (mpirank == 1)
+  Mesh = square(10, 10);
+
+broadcast(processor(1), Mesh);
+
+if (mpirank == 0)
+  plot(Mesh);

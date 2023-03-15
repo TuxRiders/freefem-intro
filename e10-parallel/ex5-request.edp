@@ -1,0 +1,21 @@
+assert(mpisize > 2);
+
+real num = 0;
+
+if (mpirank == 0)
+  num = 10;
+
+mpiBarrier(mpiCommWorld);
+
+mpiRequest req;
+
+if (mpirank == 0)
+  Isend(processor(2, req), num);
+else if (mpirank == 2)
+  Irecv(processor(0, req), num);
+
+if(mpirank == 0 || mpirank == 2)
+  mpiWait(req);
+// mpiBarrier(mpiCommWorld);
+
+cout << "Number is " << num << " in process " << mpirank << endl;

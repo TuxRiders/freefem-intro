@@ -1,0 +1,4 @@
+int size = mpisize;
+int rank = mpirank;
+
+cout << "Process " << rank << " among " << size << "!" << endl;

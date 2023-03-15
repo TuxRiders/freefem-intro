@@ -1,0 +1,7 @@
+cout << "Process " << mpirank << " among " << mpisize << "!" << endl;
+
+cout.flush;
+mpiBarrier(mpiCommWorld);
+
+if (mpirank == 0)
+  cout << "Hello from process 0." << endl;
