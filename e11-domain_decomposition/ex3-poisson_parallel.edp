@@ -1,0 +1,28 @@
+load "PETSc"
+macro dimension()2// EOM
+include "macro_ddm.idp"
+
+mesh Mesh = square(500, 500);
+
+fespace SpaceP1(Mesh, P1);
+
+varf poisson(u, v)
+   = int2d(Mesh)(dx(u)*dx(v) + dy(u)*dy(v))
+   + int2d(Mesh)(v)
+   + on(1, u=0)
+   ;
+
+Mat A;
+createMat(Mesh, A, P1);
+set(A, sparams="-pc_type hypre");
+
+real[int] b(SpaceP1.ndof);
+
+A = poisson(SpaceP1, SpaceP1);
+b = poisson(0, SpaceP1);
+
+SpaceP1 sol;
+sol[] = A^-1 * b;
+
+int[int] orderOut = [1];
+savevtk("solP.vtu", Mesh, sol, order=orderOut);

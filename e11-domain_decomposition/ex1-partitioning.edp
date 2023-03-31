@@ -1,0 +1,21 @@
+load "metis"
+
+border a(t=0, pi) { x=cos(t); y=sin(t); label=1; }
+border b(t=pi, 2*pi) { x=cos(t); y=sin(t); label=2; }
+mesh Th = buildmesh(a(100) + b(100));
+
+fespace Ph(Th, P0);
+Ph part;
+
+metisdual(part[], Th, 32);
+plot(part, value = 1, fill = 1, wait = 1, cmm = "partitioning");
+
+for(int i = 0; i < 32; ++i)
+{
+    Ph vis = (abs(part - i) < 1e-12) * 10;
+    int elt = 0;
+    for(int j = 0; j < Ph.ndof; ++j)
+        if(vis[][j] > 1e-12)
+            ++elt;
+    plot(vis, fill = 1, cmm = "partition " + i +", " + elt + " element(s)", wait = 1, nbiso = 32);
+}
